@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Grupo Educativo San Gabriel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #1f45a9; --secondary: #d4af37; --bg-body: #f4f7f6; --text-dark: #1e293b;
+            --color-jardin: #f5d417; --color-primaria: #aad2c0; --color-secundaria: #aeb4c6;
+        }
+        body { font-family: 'Fredoka', sans-serif; margin: 0; background-color: var(--bg-body); color: var(--text-dark); }
+
+        /* HEADER & MENU */
+        header { background: linear-gradient(135deg, #17348a, var(--primary)); padding: 1rem 5%; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 2000; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .logo-box { display: flex; align-items: center; gap: 25px; }
+        .logo-header { height: 120px; width: auto; }
+        .nombre-institucion { font-family: 'League Spartan', sans-serif; line-height: 1; text-transform: uppercase; }
+        .nombre-institucion .normal { font-size: 1.2rem; font-weight: 400; display: block; }
+        .nombre-institucion .negrita { font-size: 2.6rem; font-weight: 700; display: block; }
+
+        nav ul { list-style: none; display: flex; gap: 30px; align-items: center; margin: 0; padding: 0; }
+        nav a { color: white; text-decoration: none; font-family: 'League Spartan', sans-serif; transition: 0.3s; }
+        nav a:hover { color: var(--secondary); }
+        .btn-portal { border: 2px solid var(--secondary); padding: 10px 20px; border-radius: 50px; color: var(--secondary) !important; font-weight: 700; transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease; }
+        .btn-portal:hover { background: var(--secondary); color: var(--primary) !important; box-shadow: 0 6px 16px rgba(212,175,55,0.4); }
+        
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 180px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 10px 0; z-index: 1000; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu li { padding: 5px 20px; }
+        .dropdown-menu li a { color: var(--text-dark) !important; font-size: 0.9rem; }
+
+        /* CONTENIDO */
+        .contacto-container { display: flex; flex-wrap: wrap; gap: 40px; padding: 60px 5%; max-width: 1100px; margin: auto; align-items: flex-start; }
+        .col-form { flex: 1; min-width: 320px; }
+        .col-info { flex: 0 0 350px; background: white; padding: 30px; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        h1, h2 { font-family: 'League Spartan', sans-serif; color: var(--primary); }
+        input, select, textarea { width: 100%; padding: 15px; margin-bottom: 20px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; transition: box-shadow 0.2s ease, border-color 0.2s ease; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(31,69,169,0.12); }
+        button[type="submit"] { width: 100%; padding: 15px; background: linear-gradient(135deg, #2a56cc, var(--primary)); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px rgba(31,69,169,0.3); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        button[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(31,69,169,0.4); }
+        
+        .nivel-card { padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 8px solid; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .nivel-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(0,0,0,0.09); }
+        .card-jardin { border-color: var(--color-jardin); background: #fffdf0; }
+        .card-primaria { border-color: var(--color-primaria); background: #f1f9f7; }
+        .card-secundaria { border-color: var(--color-secundaria); background: #f8f9fa; }
+        .whatsapp-btn { display: inline-block; margin-top: 8px; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-size: 0.8rem; font-weight: 600; background: #25d366; color: white; }
+
+        footer { background: linear-gradient(135deg, var(--primary), #17348a); color: white; text-align: center; padding: 40px; margin-top: 50px; }
+
+        /* BARRA INFERIOR MOBILE */
+        .mobile-bottom-bar { display: none; }
+
+        .hamburger-btn { display: none; }
+        .nav-overlay { display: none; }
+
+        @media (max-width: 768px) {
+            .logo-header { height: 55px !important; }
+            .logo-box, .logo-box-custom { gap: 12px !important; }
+            .nombre-institucion .normal, .nombre-institucion-custom .normal { font-size: 0.7rem !important; }
+            .nombre-institucion .negrita, .nombre-institucion-custom .negrita { font-size: 1.3rem !important; }
+            header { flex-wrap: nowrap; padding: 1rem 4%; }
+
+            .hamburger-btn {
+                display: flex; flex-direction: column; justify-content: center; align-items: center;
+                gap: 5px; width: 42px; height: 42px; background: rgba(255,255,255,0.15);
+                border: none; border-radius: 10px; cursor: pointer; margin-left: 10px; flex-shrink: 0;
+            }
+            .hamburger-btn span { display: block; width: 22px; height: 2.5px; background: white; border-radius: 2px; transition: 0.3s ease; }
+            .hamburger-btn.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+            .hamburger-btn.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+            header nav {
+                position: fixed; top: 0; right: 0; height: 100vh; width: 78%; max-width: 300px;
+                background: linear-gradient(135deg, #17348a, var(--primary));
+                box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+                transform: translateX(100%); transition: transform 0.35s ease;
+                padding-top: 100px; overflow-y: auto;
+            }
+            header nav.nav-open { transform: translateX(0); }
+            nav ul { flex-direction: column; align-items: flex-start; gap: 22px; width: 100%; padding: 0 30px; margin: 0; }
+            nav ul li { width: 100%; font-size: 1rem; }
+            .dropdown-menu { display: block; position: static; box-shadow: none; padding: 10px 0 0 15px; background: transparent; min-width: 0; }
+            .dropdown-menu li { padding: 8px 0; }
+            .dropdown-menu li a { color: rgba(255,255,255,0.85) !important; }
+            .dropdown-menu li a:hover { color: var(--secondary) !important; }
+
+            .nav-overlay.active {
+                display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1500;
+            }
+
+            body { padding-bottom: 68px; }
+            .whatsapp-float { display: none; }
+
+            .mobile-bottom-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                background: var(--primary);
+                z-index: 9998;
+                box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            }
+            .mobile-bottom-bar a {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+                padding: 10px 5px;
+                color: white;
+                text-decoration: none;
+                font-family: 'League Spartan', sans-serif;
+                font-size: 0.7rem;
+                font-weight: 700;
+                border-right: 1px solid rgba(255,255,255,0.15);
+            }
+            .mobile-bottom-bar a:last-child { border-right: none; }
+            .mobile-bottom-bar .icon { width: 20px; height: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-box">
+            <img src="assets/img/logo-institucional.png" alt="Logo" class="logo-header">
+            <div class="nombre-institucion">
+                <span class="normal">Grupo Educativo</span>
+                <span class="negrita">San Gabriel</span>
+            </div>
+            <a href="https://www.instagram.com/grupoeducativosangabriel/" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; margin-left: 15px; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 50%; color: white; flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+                </svg>
+            </a>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="index.html">INICIO</a></li>
+                <li class="dropdown">
+                    <a href="#">NIVELES ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="jardin.html">Jardín</a></li>
+                        <li><a href="primario.html">Primario</a></li>
+                        <li><a href="secundario.html">Secundario</a></li>
+                    </ul>
+                </li>
+                <li><a href="administracion.html">ADMINISTRACIÓN</a></li>
+                <li><a href="contacto.html">CONTACTO</a></li>
+                <li><a href="alumno_dashboard.html" class="btn-portal">PORTAL ALUMNOS</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
+
+    <main class="contacto-container">
+        <section class="col-form">
+            <h1>Contacto</h1>
+            <form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec" method="POST">
+                <input type="text" name="nombre" placeholder="Nombre completo" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="tel" name="telefono" placeholder="Teléfono">
+                <select name="motivo" id="motivo">
+                    <option value="Inscripciones">Inscripciones</option>
+                    <option value="Administrativo">Administrativo</option>
+                    <option value="Consulta Académica/Pedagógica">Consulta Académica/Pedagógica</option>
+                    <option value="Otra consulta">Otra consulta</option>
+                </select>
+                <div id="destino-wrapper">
+                    <select name="destino" id="destino" required>
+                        <option value="" disabled selected>¿A qué nivel corresponde?</option>
+                        <option value="Jardín">Jardín</option>
+                        <option value="Primario">Primario</option>
+                        <option value="Secundario">Secundario</option>
+                        <option value="Administración">Administración</option>
+                    </select>
+                </div>
+                <textarea name="consulta" rows="5" placeholder="Mensaje" required></textarea>
+                <button type="submit">ENVIAR CONSULTA</button>
+            </form>
+        </section>
+
+        <section class="col-info">
+            <h2>DATOS DE CONTACTO</h2>
+            <div class="nivel-card card-jardin">
+                <strong>Nivel Inicial (Jardín)</strong><br>Horario: 08:00 a 12:30 hs<br>
+                <a href="https://wa.me/5491140456999" class="whatsapp-btn" target="_blank">WhatsApp Jardín</a>
+            </div>
+            <div class="nivel-card card-primaria">
+                <strong>Nivel Primario</strong><br>Horario: 07:30 a 12:30 hs<br>
+                <a href="https://wa.me/5491136487949" class="whatsapp-btn" target="_blank">WhatsApp Primaria</a>
+            </div>
+            <div class="nivel-card card-secundaria">
+                <strong>Nivel Secundario</strong><br>Horario: 07:30 a 13:00 hs<br>
+                <a href="https://wa.me/5491131006347" class="whatsapp-btn" target="_blank">WhatsApp Secundario</a>
+            </div>
+            <div class="nivel-card" style="border-color: var(--secondary); background: #fffaf0;">
+                <strong>Seguinos en Instagram</strong><br>
+                <a href="https://www.instagram.com/grupoeducativosangabriel/" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; color: var(--primary); font-weight: 700; text-decoration: none;">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" style="height: 20px; width: 20px;">
+                    @grupoeducativosangabriel
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Nazca 1338, Claypole | Tel: 4291-1465</p>
+        <p style="margin-top: 15px;">
+            <a href="https://www.instagram.com/grupoeducativosangabriel/" target="_blank" rel="noopener" style="color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: 'League Spartan', sans-serif; font-weight: 600;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" style="height: 22px; width: 22px;">
+                Seguinos en Instagram
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        const motivoSelect = document.getElementById('motivo');
+        const destinoWrapper = document.getElementById('destino-wrapper');
+        const destinoSelect = document.getElementById('destino');
+        motivoSelect.addEventListener('change', function() {
+            destinoWrapper.style.display = (this.value === 'Otra consulta') ? 'none' : 'block';
+            destinoSelect.required = (this.value !== 'Otra consulta');
+        });
+    </script>
+    <div class="mobile-bottom-bar">
+        <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Jardín
+        </a>
+        <a href="https://wa.me/5491136487949" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Primaria
+        </a>
+        <a href="https://wa.me/5491131006347" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Secundario
+        </a>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mainNav').classList.toggle('nav-open');
+            document.getElementById('hamburgerBtn').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('active');
+        }
+        document.querySelectorAll('#mainNav a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && !this.parentElement.classList.contains('dropdown')) {
+                    document.getElementById('mainNav').classList.remove('nav-open');
+                    document.getElementById('hamburgerBtn').classList.remove('active');
+                    document.getElementById('navOverlay').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

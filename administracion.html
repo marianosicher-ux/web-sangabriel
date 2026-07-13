@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración | Grupo Educativo San Gabriel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=League+Spartan:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary: #1f45a9; --secondary: #d4af37; --bg-body: #f4f7f6; --text-dark: #1e293b; }
+        body { font-family: 'Fredoka', sans-serif; margin: 0; background-color: var(--bg-body); color: var(--text-dark); }
+
+        /* HEADER & MENU */
+        header { background: linear-gradient(135deg, #17348a, var(--primary)); padding: 1.5rem 5%; color: white; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 2000; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .logo-box { display: flex; align-items: center; gap: 25px; }
+        .logo-header { height: 120px; width: auto; }
+        .nombre-institucion { font-family: 'League Spartan', sans-serif; line-height: 1; text-transform: uppercase; }
+        .nombre-institucion .normal { font-size: 1.2rem; font-weight: 400; display: block; }
+        .nombre-institucion .negrita { font-size: 2.6rem; font-weight: 700; display: block; }
+        nav ul { list-style: none; display: flex; gap: 30px; align-items: center; margin: 0; padding: 0; }
+        nav a { color: white; text-decoration: none; font-family: 'League Spartan', sans-serif; transition: 0.3s; }
+        nav a:hover { color: var(--secondary); }
+        .btn-portal { border: 2px solid var(--secondary); padding: 10px 20px; border-radius: 50px; color: var(--secondary) !important; font-weight: 700; transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease; }
+        .btn-portal:hover { background: var(--secondary); color: var(--primary) !important; box-shadow: 0 6px 16px rgba(212,175,55,0.4); }
+        
+        .dropdown { position: relative; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 180px; border-radius: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); padding: 10px 0; z-index: 1000; }
+        .dropdown:hover .dropdown-menu { display: block; }
+        .dropdown-menu li { padding: 5px 20px; }
+        .dropdown-menu li a { color: var(--text-dark) !important; font-size: 0.9rem; }
+        .dropdown-menu li a:hover { color: var(--primary) !important; font-weight: 600; }
+
+        /* CONTENIDO */
+        .main-content { padding: 60px 5%; max-width: 900px; margin: auto; }
+        .card-container { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 15px 40px rgba(31,69,169,0.10), 0 5px 15px rgba(0,0,0,0.05); }
+        h1 { font-family: 'League Spartan', sans-serif; color: var(--primary); font-size: 2.5rem; margin-bottom: 30px; }
+        
+        /* ACORDEONES (Diseño unificado) */
+        .accordion { background-color: #f1f5f9; color: var(--primary); cursor: pointer; padding: 20px; width: 100%; border: none; text-align: left; font-size: 1.2rem; font-family: 'League Spartan', sans-serif; font-weight: 700; border-radius: 15px; margin-bottom: 10px; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+        .active, .accordion:hover { background-color: var(--primary); color: white; box-shadow: 0 10px 22px rgba(31,69,169,0.3); }
+        .panel { padding: 0 20px; display: none; background-color: white; overflow: hidden; border-left: 5px solid var(--secondary); margin-bottom: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        
+        footer { background: linear-gradient(135deg, var(--primary), #17348a); color: white; text-align: center; padding: 40px; margin-top: 50px; }
+
+        /* WHATSAPP FLOTANTE */
+        .whatsapp-float { position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; flex-direction: column; align-items: center; }
+        .whatsapp-menu { display: none; flex-direction: column; background: white; padding: 10px 0; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); width: 200px; margin-bottom: 20px; border: 1px solid #e2e8f0; opacity: 0; transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .whatsapp-menu.active { display: flex; opacity: 1; transform: translateY(0) scale(1); }
+        .whatsapp-menu a { text-decoration: none; color: var(--primary); font-family: 'League Spartan', sans-serif; font-size: 1.3rem; font-weight: 700; padding: 15px; text-align: center; }
+        .whatsapp-menu a:hover { background: #f4f7f6; }
+        .wa-trigger { width: 65px; height: 65px; background: #25d366; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(37,211,102,0.45); padding: 0; transition: transform 0.2s, box-shadow 0.2s; }
+        .wa-trigger:hover { transform: scale(1.08); box-shadow: 0 8px 25px rgba(37,211,102,0.6); }
+        .wa-trigger img { width: 40px; height: 40px; display: block; }
+
+        /* BARRA INFERIOR MOBILE */
+        .mobile-bottom-bar { display: none; }
+
+        .hamburger-btn { display: none; }
+        .nav-overlay { display: none; }
+
+        @media (max-width: 768px) {
+            .logo-header { height: 55px !important; }
+            .logo-box, .logo-box-custom { gap: 12px !important; }
+            .nombre-institucion .normal, .nombre-institucion-custom .normal { font-size: 0.7rem !important; }
+            .nombre-institucion .negrita, .nombre-institucion-custom .negrita { font-size: 1.3rem !important; }
+            header { flex-wrap: nowrap; padding: 1rem 4%; }
+
+            .hamburger-btn {
+                display: flex; flex-direction: column; justify-content: center; align-items: center;
+                gap: 5px; width: 42px; height: 42px; background: rgba(255,255,255,0.15);
+                border: none; border-radius: 10px; cursor: pointer; margin-left: 10px; flex-shrink: 0;
+            }
+            .hamburger-btn span { display: block; width: 22px; height: 2.5px; background: white; border-radius: 2px; transition: 0.3s ease; }
+            .hamburger-btn.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+            .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+            .hamburger-btn.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+            header nav {
+                position: fixed; top: 0; right: 0; height: 100vh; width: 78%; max-width: 300px;
+                background: linear-gradient(135deg, #17348a, var(--primary));
+                box-shadow: -10px 0 30px rgba(0,0,0,0.3);
+                transform: translateX(100%); transition: transform 0.35s ease;
+                padding-top: 100px; overflow-y: auto;
+            }
+            header nav.nav-open { transform: translateX(0); }
+            nav ul { flex-direction: column; align-items: flex-start; gap: 22px; width: 100%; padding: 0 30px; margin: 0; }
+            nav ul li { width: 100%; font-size: 1rem; }
+            .dropdown-menu { display: block; position: static; box-shadow: none; padding: 10px 0 0 15px; background: transparent; min-width: 0; }
+            .dropdown-menu li { padding: 8px 0; }
+            .dropdown-menu li a { color: rgba(255,255,255,0.85) !important; }
+            .dropdown-menu li a:hover { color: var(--secondary) !important; }
+
+            .nav-overlay.active {
+                display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1500;
+            }
+
+            body { padding-bottom: 68px; }
+            .whatsapp-float { display: none; }
+
+            .mobile-bottom-bar {
+                display: flex;
+                position: fixed;
+                bottom: 0; left: 0; right: 0;
+                background: var(--primary);
+                z-index: 9998;
+                box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            }
+            .mobile-bottom-bar a {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 3px;
+                padding: 10px 5px;
+                color: white;
+                text-decoration: none;
+                font-family: 'League Spartan', sans-serif;
+                font-size: 0.7rem;
+                font-weight: 700;
+                border-right: 1px solid rgba(255,255,255,0.15);
+            }
+            .mobile-bottom-bar a:last-child { border-right: none; }
+            .mobile-bottom-bar .icon { width: 20px; height: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-box">
+            <img src="assets/img/logo-institucional.png" alt="Logo" class="logo-header">
+            <div class="nombre-institucion">
+                <span class="normal">Grupo Educativo</span>
+                <span class="negrita">San Gabriel</span>
+            </div>
+            <a href="https://www.instagram.com/grupoeducativosangabriel/" target="_blank" rel="noopener" aria-label="Instagram" style="display: flex; align-items: center; justify-content: center; width: 42px; height: 42px; margin-left: 15px; border: 1.5px solid rgba(255,255,255,0.4); border-radius: 50%; color: white; flex-shrink: 0;">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line>
+                </svg>
+            </a>
+        </div>
+        <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú" onclick="toggleMobileMenu()">
+            <span></span><span></span><span></span>
+        </button>
+        <nav id="mainNav">
+            <ul>
+                <li><a href="index.html">INICIO</a></li>
+                <li class="dropdown">
+                    <a href="#">NIVELES ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="jardin.html">Jardín</a></li>
+                        <li><a href="primario.html">Primario</a></li>
+                        <li><a href="secundario.html">Secundario</a></li>
+                    </ul>
+                </li>
+                <li><a href="administracion.html">ADMINISTRACIÓN</a></li> <li><a href="contacto.html">CONTACTO</a></li>
+                <li><a href="alumno_dashboard.html" class="btn-portal">PORTAL ALUMNOS</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
+
+    <main class="main-content">
+        <article class="card-container">
+            <h1>💻 Administración y Aranceles</h1>
+
+            <button class="accordion">Forma de pago</button>
+            <div class="panel">
+                <p>El Arancel Anual de los tres niveles se divide en diez cuotas (marzo a diciembre). El pago debe hacerse del 01 al 10 de cada mes.</p>
+                <p><strong>Métodos:</strong> Sistema bancario (Cupón), transferencia electrónica o modalidad designada. Vencido el plazo se adicionará un recargo.</p>
+            </div>
+
+            <button class="accordion">Aporte estatal</button>
+            <div class="panel">
+                <p>Los aportes destinados a salarios y cargas sociales son:</p>
+                <ul>
+                    <li>Jardín “La ardillita traviesa”: 80%</li>
+                    <li>Nivel Primario: 60%</li>
+                    <li>Nivel Secundario: 60%</li>
+                </ul>
+            </div>
+
+            <button class="accordion">Matrícula e Inscripción</button>
+            <div class="panel">
+                <p>La matrícula tiene validez por un año lectivo. Son condiciones indispensables:</p>
+                <ul>
+                    <li>Cumplir con los requisitos académicos del nivel.</li>
+                    <li>Aprobación del Equipo de Conducción.</li>
+                    <li>No poseer deudas previas.</li>
+                </ul>
+            </div>
+
+            <button class="accordion">Becas</button>
+            <div class="panel">
+                <p>El presente reglamento tiene por objeto regular el sistema de Becas para estudiantes del Nivel Inicial, Primario y Secundario.</p>
+                <p><strong>Condiciones para aspirantes:</strong></p>
+                <ul>
+                    <li>La familia solicitante no deberá registrar deudas pendientes con la institución.</li>
+                    <li>El estudiante beneficiado deberá tener un buen rendimiento académico y sus actitudes y comportamiento deberán ser acordes con los valores de la institución.</li>
+                    <li>El beneficio será otorgado por el término de un ciclo lectivo (Un año).</li>
+                </ul>
+                <p>Cada ciclo lectivo se determinará en el presupuesto una parte destinada a financiar las Becas. El monto y número de Becas a otorgar estará supeditado a ese presupuesto.</p>
+                <p>Las familias podrán realizar la solicitud de las becas o la renovación de las mismas, durante el mes de febrero de cada año. Dichas solicitudes se tramitarán ante la dirección del nivel correspondiente y posteriormente serán evaluadas con los representantes legales de la institución. La información relativa a las solicitudes tendrá carácter reservado. Y las decisiones tomadas al respecto de las becas serán inapelables.</p>
+                <p><strong>BECAS AUTOMÁTICAS POR HERMANOS:</strong> Se otorgan automáticamente al momento de las inscripciones:</p>
+                <ul>
+                    <li><strong>2 hermanos:</strong> Beca del 20% al hermano mayor.</li>
+                    <li><strong>3 hermanos:</strong> Beca del 50% al hermano mayor y 20% al hermano siguiente.</li>
+                    <li><strong>4 hermanos:</strong> Dos becas del 50% (hermano mayor y siguiente) y una beca del 20% para el 3º hermano.</li>
+                </ul>
+                <p><em>No hace falta realizar la renovación de las mismas.</em></p>
+            </div>
+
+            <button class="accordion">Facturación y Consultas</button>
+            <div class="panel">
+                <p>Ante modificaciones en los datos de facturación, enviar un correo a <strong>administracion@sangabrielclaypole.edu.ar</strong>.</p>
+            </div>
+
+            <div style="margin-top: 40px;">
+                <h2 style="font-family: 'League Spartan', sans-serif; color: var(--primary);">📥 Formularios Útiles</h2>
+                <button class="accordion" style="background-color: var(--secondary); color: white;">Acceder a Documentación ▾</button>
+                <div class="panel">
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="margin: 15px 0;"><a href="assets/docs/solicitud_de_beca.pdf" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: 600;">📄 Descargar: Formulario de Becas</a></li>
+                        <li style="margin: 15px 0;"><a href="assets/docs/Instructivo_para_transferencias.pdf" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: 600;">📄 Descargar: Instructivo para transferencias</a></li>
+                        <li style="margin: 15px 0;"><a href="assets/docs/Datos_de_facturacion.pdf" target="_blank" style="text-decoration: none; color: var(--primary); font-weight: 600;">📄 Descargar: Formulario de datos de facturación</a></li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <div class="whatsapp-float">
+        <div class="whatsapp-menu" id="wa-menu">
+            <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">Jardín</a>
+            <a href="https://wa.me/5491136487949" target="_blank" rel="noopener">Primaria</a>
+            <a href="https://wa.me/5491131006347" target="_blank" rel="noopener">Secundario</a>
+        </div>
+        <button class="wa-trigger" onclick="document.getElementById('wa-menu').classList.toggle('active')">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+        </button>
+    </div>
+
+    <footer>
+        <p>Nazca 1338, Claypole | Tel: 4291-1465</p>
+        <p style="margin-top: 15px;">
+            <a href="https://www.instagram.com/grupoeducativosangabriel/" target="_blank" rel="noopener" style="color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; font-family: 'League Spartan', sans-serif; font-weight: 600;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram" style="height: 22px; width: 22px;">
+                Seguinos en Instagram
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (let i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                panel.style.display = (panel.style.display === "block") ? "none" : "block";
+            });
+        }
+    </script>
+    <div class="mobile-bottom-bar">
+        <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Jardín
+        </a>
+        <a href="https://wa.me/5491136487949" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Primaria
+        </a>
+        <a href="https://wa.me/5491131006347" target="_blank" rel="noopener">
+            <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+            Secundario
+        </a>
+    </div>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mainNav').classList.toggle('nav-open');
+            document.getElementById('hamburgerBtn').classList.toggle('active');
+            document.getElementById('navOverlay').classList.toggle('active');
+        }
+        document.querySelectorAll('#mainNav a').forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768 && !this.parentElement.classList.contains('dropdown')) {
+                    document.getElementById('mainNav').classList.remove('nav-open');
+                    document.getElementById('hamburgerBtn').classList.remove('active');
+                    document.getElementById('navOverlay').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
