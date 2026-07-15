@@ -49,6 +49,11 @@
         /* CARRUSEL */
         .carrusel-container { width: 100%; height: 450px; overflow: hidden; position: relative; margin-bottom: 40px; }
         .carrusel-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 180px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); pointer-events: none; }
+
+        .banner-inscripciones { background: linear-gradient(135deg, var(--secondary), #c49a2e); color: #1e293b; text-align: center; padding: 14px 5%; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; font-family: 'League Spartan', sans-serif; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; z-index: 500; }
+        .banner-inscripciones span { font-size: 1rem; }
+        .banner-inscripciones a { background: var(--primary); color: white; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-size: 0.85rem; transition: transform 0.2s ease; }
+        .banner-inscripciones a:hover { transform: translateY(-2px); }
         .carrusel-track { display: flex; width: 400%; height: 100%; transition: transform 0.5s ease-in-out; }
         .slide { width: 25%; height: 100%; flex-shrink: 0; }
         .slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
@@ -128,6 +133,10 @@
             .carrusel-container { height: 220px; margin-bottom: 20px; }
             .carrusel-container::after { height: 90px; }
 
+            .banner-inscripciones { padding: 10px 4%; gap: 10px; }
+            .banner-inscripciones span { font-size: 0.8rem; }
+            .banner-inscripciones a { padding: 6px 16px; font-size: 0.75rem; }
+
             .mobile-bottom-bar {
                 display: flex;
                 position: fixed;
@@ -193,6 +202,11 @@
         </nav>
     </header>
     <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
+
+    <div class="banner-inscripciones">
+        <span>📝 Inscripciones Abiertas — Ciclo Lectivo 2027</span>
+        <a href="contacto.html?motivo=Inscripciones">Quiero inscribirme</a>
+    </div>
 
     <section class="carrusel-container">
         <div class="carrusel-track" id="track">

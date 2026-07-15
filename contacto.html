@@ -232,6 +232,18 @@
             destinoWrapper.style.display = (this.value === 'Otra consulta') ? 'none' : 'block';
             destinoSelect.required = (this.value !== 'Otra consulta');
         });
+
+        // Pre-completar el formulario si se llega desde un link de nivel (ej: contacto.html?motivo=Inscripciones&destino=Jardín)
+        const params = new URLSearchParams(window.location.search);
+        const motivoParam = params.get('motivo');
+        const destinoParam = params.get('destino');
+        if (motivoParam && [...motivoSelect.options].some(o => o.value === motivoParam)) {
+            motivoSelect.value = motivoParam;
+            motivoSelect.dispatchEvent(new Event('change'));
+        }
+        if (destinoParam && [...destinoSelect.options].some(o => o.value === destinoParam)) {
+            destinoSelect.value = destinoParam;
+        }
     </script>
     <div class="mobile-bottom-bar">
         <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">
