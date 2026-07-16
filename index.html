@@ -47,7 +47,7 @@
         .dropdown-menu li a:hover { color: var(--primary) !important; font-weight: 600; }
 
         /* CARRUSEL */
-        .carrusel-container { width: 100%; height: 450px; overflow: hidden; position: relative; margin-bottom: 40px; }
+        .carrusel-container { width: 100%; height: 450px; overflow: hidden; position: relative; margin-bottom: 40px; touch-action: pan-y; }
         .carrusel-container::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 180px; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); pointer-events: none; }
 
         .banner-inscripciones { background: linear-gradient(135deg, var(--secondary), #c49a2e); color: #1e293b; text-align: center; padding: 14px 5%; display: flex; align-items: center; justify-content: center; gap: 18px; flex-wrap: wrap; font-family: 'League Spartan', sans-serif; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.1); position: relative; z-index: 500; }
@@ -127,11 +127,11 @@
                 display: block; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1500;
             }
 
-            body { padding-bottom: 68px; }
+            body { padding-bottom: 78px; }
             .whatsapp-float { display: none; }
 
-            .carrusel-container { height: 220px; margin-bottom: 20px; }
-            .carrusel-container::after { height: 90px; }
+            .carrusel-container { height: 320px; margin-bottom: 20px; }
+            .carrusel-container::after { height: 110px; }
 
             .banner-inscripciones { padding: 10px 4%; gap: 10px; }
             .banner-inscripciones span { font-size: 0.8rem; }
@@ -150,17 +150,17 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 3px;
-                padding: 10px 5px;
+                gap: 5px;
+                padding: 14px 5px;
                 color: white;
                 text-decoration: none;
                 font-family: 'League Spartan', sans-serif;
-                font-size: 0.7rem;
+                font-size: 0.85rem;
                 font-weight: 700;
                 border-right: 1px solid rgba(255,255,255,0.15);
             }
             .mobile-bottom-bar a:last-child { border-right: none; }
-            .mobile-bottom-bar .icon { width: 20px; height: 20px; }
+            .mobile-bottom-bar .icon { width: 28px; height: 28px; }
         }
     </style>
 </head>
@@ -268,14 +268,39 @@
     <script>
         const track = document.getElementById('track');
         const dots = document.querySelectorAll('.dot');
+        const carruselContainer = document.querySelector('.carrusel-container');
         let index = 0;
+        let autoSlide;
+
         function goToSlide(n) {
-            index = n;
+            index = (n + 4) % 4;
             track.style.transform = `translateX(-${index * 25}%)`;
             dots.forEach(d => d.classList.remove('active'));
             dots[index].classList.add('active');
         }
-        setInterval(() => { index = (index + 1) % 4; goToSlide(index); }, 5000);
+
+        function startAutoSlide() {
+            autoSlide = setInterval(() => { goToSlide(index + 1); }, 5000);
+        }
+        startAutoSlide();
+
+        // Swipe táctil (mobile)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carruselContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(autoSlide);
+        }, { passive: true });
+
+        carruselContainer.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 40) {
+                if (diff > 0) { goToSlide(index + 1); } else { goToSlide(index - 1); }
+            }
+            startAutoSlide();
+        }, { passive: true });
     </script>
     <div class="mobile-bottom-bar">
         <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">
