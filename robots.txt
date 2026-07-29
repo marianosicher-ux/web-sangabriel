@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sangabrielclaypole.edu.ar/sitemap.xml
