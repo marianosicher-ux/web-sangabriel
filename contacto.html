@@ -204,7 +204,7 @@
     <main class="contacto-container">
         <section class="col-form">
             <h1>Contacto</h1>
-            <form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec"
+            <form id="miFormulario" target="hidden_iframe" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec"
 method="POST">
                 <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Email" required>
@@ -317,7 +317,6 @@ method="POST">
                 }
             });
         });
-    </script>
     const formulario = document.getElementById("miFormulario");
 const toast = document.getElementById("toast");
 
@@ -346,5 +345,7 @@ formulario.addEventListener("submit", function(){
     },1500);
 
 });
+
+</script>
 </body>
 </html>
