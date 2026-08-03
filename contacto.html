@@ -122,6 +122,38 @@
             .mobile-bottom-bar a:last-child { border-right: none; }
             .mobile-bottom-bar .icon { width: 28px; height: 28px; }
         }
+        .toast{
+    position:fixed;
+    right:30px;
+    bottom:30px;
+
+    background:#28a745;
+    color:white;
+
+    padding:18px 25px;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+    opacity:0;
+
+    transform:translateY(30px);
+
+    transition:.4s;
+
+    z-index:9999;
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
     </style>
 </head>
 <body>
@@ -162,11 +194,18 @@
         </nav>
     </header>
     <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
-
+    
+<iframe
+    name="hidden_iframe"
+    id="hidden_iframe"
+    style="display:none;">
+</iframe>
+    
     <main class="contacto-container">
         <section class="col-form">
             <h1>Contacto</h1>
-            <form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec" method="POST">
+            <form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec"
+method="POST">
                 <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="tel" name="telefono" placeholder="Teléfono">
@@ -187,6 +226,9 @@
                 </div>
                 <textarea name="consulta" rows="5" placeholder="Mensaje" required></textarea>
                 <button type="submit">ENVIAR CONSULTA</button>
+                <div id="toast" class="toast">
+    ✅ Consulta enviada correctamente.
+</div>
             </form>
         </section>
 
@@ -276,5 +318,33 @@
             });
         });
     </script>
+    const formulario = document.getElementById("miFormulario");
+const toast = document.getElementById("toast");
+
+formulario.addEventListener("submit", function(){
+
+    const boton = formulario.querySelector("button");
+
+    boton.disabled = true;
+    boton.innerHTML = "Enviando...";
+
+    setTimeout(function(){
+
+        formulario.reset();
+
+        toast.classList.add("show");
+
+        boton.disabled = false;
+        boton.innerHTML = "ENVIAR CONSULTA";
+
+        setTimeout(function(){
+
+            toast.classList.remove("show");
+
+        },4000);
+
+    },1500);
+
+});
 </body>
 </html>
