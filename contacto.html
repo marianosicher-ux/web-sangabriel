@@ -42,6 +42,12 @@
         input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(31,69,169,0.12); }
         button[type="submit"] { width: 100%; padding: 15px; background: linear-gradient(135deg, #2a56cc, var(--primary)); color: white; border: none; border-radius: 50px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 22px rgba(31,69,169,0.3); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         button[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 14px 26px rgba(31,69,169,0.4); }
+        button[type="submit"]:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        .form-mensaje { display: none; padding: 20px 25px; border-radius: 15px; font-family: 'League Spartan', sans-serif; font-weight: 600; margin-bottom: 20px; align-items: center; gap: 12px; }
+        .form-mensaje.mostrar { display: flex; }
+        .form-mensaje.exito { background: #e8f6ee; color: #1a7a45; border: 1px solid #b7e4c7; }
+        .form-mensaje.error { background: #fdeaea; color: #b42323; border: 1px solid #f3b8b8; }
         
         .nivel-card { padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 8px solid; box-shadow: 0 8px 20px rgba(0,0,0,0.05); transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .nivel-card:hover { transform: translateY(-4px); box-shadow: 0 12px 26px rgba(0,0,0,0.09); }
@@ -122,38 +128,6 @@
             .mobile-bottom-bar a:last-child { border-right: none; }
             .mobile-bottom-bar .icon { width: 28px; height: 28px; }
         }
-        .toast{
-    position:fixed;
-    right:30px;
-    bottom:30px;
-
-    background:#28a745;
-    color:white;
-
-    padding:18px 25px;
-
-    border-radius:12px;
-
-    font-size:16px;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-
-    opacity:0;
-
-    transform:translateY(30px);
-
-    transition:.4s;
-
-    z-index:9999;
-}
-
-.toast.show{
-
-    opacity:1;
-
-    transform:translateY(0);
-
-}
     </style>
 </head>
 <body>
@@ -194,18 +168,12 @@
         </nav>
     </header>
     <div class="nav-overlay" id="navOverlay" onclick="toggleMobileMenu()"></div>
-    
-<iframe
-    name="hidden_iframe"
-    id="hidden_iframe"
-    style="display:none;">
-</iframe>
-    
+
     <main class="contacto-container">
         <section class="col-form">
             <h1>Contacto</h1>
-            <form id="miFormulario" target="hidden_iframe" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec"
-method="POST">
+            <div id="formMensaje" class="form-mensaje"></div>
+            <form id="miFormulario" action="https://script.google.com/macros/s/AKfycbzsutEGbT5LUqOq-8776Y9EkMr34VHoljfzgLTyVjk6ies7L9Xy41sAT5KH-GNrpjXlaw/exec" method="POST">
                 <input type="text" name="nombre" placeholder="Nombre completo" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="tel" name="telefono" placeholder="Teléfono">
@@ -226,9 +194,6 @@ method="POST">
                 </div>
                 <textarea name="consulta" rows="5" placeholder="Mensaje" required></textarea>
                 <button type="submit">ENVIAR CONSULTA</button>
-                <div id="toast" class="toast">
-    ✅ Consulta enviada correctamente.
-</div>
             </form>
         </section>
 
@@ -286,6 +251,42 @@ method="POST">
         if (destinoParam && [...destinoSelect.options].some(o => o.value === destinoParam)) {
             destinoSelect.value = destinoParam;
         }
+
+        // Enviar el formulario en segundo plano (sin navegar a la URL del script)
+        const form = document.getElementById('miFormulario');
+        const mensajeDiv = document.getElementById('formMensaje');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        function mostrarMensaje(tipo, texto) {
+            mensajeDiv.className = 'form-mensaje mostrar ' + tipo;
+            mensajeDiv.innerHTML = texto;
+            mensajeDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'ENVIANDO...';
+            mensajeDiv.classList.remove('mostrar');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                mode: 'no-cors'
+            })
+            .then(function() {
+                mostrarMensaje('exito', '✅ ¡Gracias! Recibimos tu consulta y te vamos a responder a la brevedad.');
+                form.reset();
+                destinoWrapper.style.display = 'block';
+            })
+            .catch(function() {
+                mostrarMensaje('error', '⚠️ Hubo un problema al enviar tu consulta. Por favor, intentá de nuevo o escribinos por WhatsApp.');
+            })
+            .finally(function() {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'ENVIAR CONSULTA';
+            });
+        });
     </script>
     <div class="mobile-bottom-bar">
         <a href="https://wa.me/5491140456999" target="_blank" rel="noopener">
@@ -317,35 +318,6 @@ method="POST">
                 }
             });
         });
-    const formulario = document.getElementById("miFormulario");
-const toast = document.getElementById("toast");
-
-formulario.addEventListener("submit", function(){
-
-    const boton = formulario.querySelector("button");
-
-    boton.disabled = true;
-    boton.innerHTML = "Enviando...";
-
-    setTimeout(function(){
-
-        formulario.reset();
-
-        toast.classList.add("show");
-
-        boton.disabled = false;
-        boton.innerHTML = "ENVIAR CONSULTA";
-
-        setTimeout(function(){
-
-            toast.classList.remove("show");
-
-        },4000);
-
-    },1500);
-
-});
-
-</script>
+    </script>
 </body>
 </html>
